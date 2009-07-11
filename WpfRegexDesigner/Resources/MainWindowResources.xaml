@@ -1,0 +1,66 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:m="clr-namespace:WpfRegexDesigner.Model;assembly=WpfRegexDesigner.Model"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:settings="clr-namespace:WpfRegexDesigner.Properties">
+	<settings:Settings x:Key="settings" />
+	<!-- 
+	Template for the Model.RegexMatch object. Group objects (in the Groups property) are shown as 
+	child items.
+	-->
+	<HierarchicalDataTemplate DataType="{x:Type m:RegexMatch}" ItemsSource="{Binding Path=Groups}">
+		<StackPanel Orientation="Horizontal">
+			<Image Source="../Images/folder.png" />
+			<TextBlock Text="{Binding Value}" Margin="7,0,0,0" />
+			</StackPanel>
+	</HierarchicalDataTemplate>
+	<!--
+	Template for the Model.RegexGroup object. Shows Captures as children.
+	-->
+	<HierarchicalDataTemplate DataType="{x:Type m:RegexGroup}" ItemsSource="{Binding Path=Captures}">
+		<StackPanel Orientation="Horizontal">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="«" />
+					<TextBlock Text="{Binding Name}" />
+					<TextBlock Text="»" />	
+			</StackPanel>
+			<Border BorderBrush="Red" BorderThickness="0,0,0,1" Margin="7,0,0,0" >
+				<TextBlock Text="{Binding Value}" />
+				</Border>
+		</StackPanel>
+	</HierarchicalDataTemplate>
+	<!--
+	Template for the Model.RegexCapture  object. 
+	-->
+	<DataTemplate DataType="{x:Type m:RegexCapture}">
+		<StackPanel Orientation="Horizontal">
+			<Image Source="../Images/arrow_right_small.png" />
+			<Border BorderBrush="Red" BorderThickness="0,0,0,1" Margin="7,0,0,0" >
+				<TextBlock Text="{Binding Value}"  />
+			</Border>
+		</StackPanel>
+	</DataTemplate>
+	<Style x:Key="Header">
+		<Setter Property="Border.BorderThickness" Value="3" />
+	</Style>
+	<Style x:Key="TextViewerBaseStyle">
+		<Setter Property="Control.FontFamily" Value="Envy Code R"/>
+		<Setter Property="Control.FontSize" Value="10pt" />
+		<Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="auto" />
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="auto" />
+	</Style>
+	<Style x:Key="textBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextViewerBaseStyle}">
+		<Setter Property="AcceptsReturn" Value="true" />
+	</Style>
+	<Style TargetType="{x:Type GridSplitter}">
+		<Setter Property="BorderBrush" Value="Black" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Focusable" Value="False" />
+	</Style>
+	<Style TargetType="{x:Type TextBlock}">
+		<Setter Property="Margin" Value="3" />
+		<Setter Property="Padding" Value="3" />
+		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+	</Style>
+</ResourceDictionary>

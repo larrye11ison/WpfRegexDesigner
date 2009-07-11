@@ -1,0 +1,118 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:m="clr-namespace:WpfRegexDesigner.Model;assembly=WpfRegexDesigner.Model"
+	xmlns:local="clr-namespace:WpfRegexDesigner"
+	xmlns:hack="clr-namespace:WpfRegexDesigner.Hacks"	
+	xmlns:ctrl="clr-namespace:WpfRegexDesigner.Controller"
+	x:Class="WpfRegexDesigner.MainWindow"
+	Title="Wpf Regex Designer (inspired by http://www.radsoftware.com.au/regexdesigner)"
+	Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+	Closed="MainWindow_Closed"
+	Height="{Binding LayoutOptions.WindowHeight, Mode=TwoWay}" Width="{Binding LayoutOptions.WindowWidth, Mode=TwoWay}">
+	<Window.CommandBindings>
+		<CommandBinding Command="ctrl:RegexDesignerCommands.ExecuteRegexCommand" Executed="cbd_Executed" />
+		<CommandBinding Command="ctrl:RegexDesignerCommands.ToolsOptionsCommand" Executed="toolsOptionsCommandBinding_Executed" />
+		<CommandBinding Command="ctrl:RegexDesignerCommands.EditRegexCommand" Executed="editRegexCommandBinding_Executed" />
+		<CommandBinding Command="ctrl:RegexDesignerCommands.EditInputTextCommand" Executed="editInputTextCommandBinding_Executed" />
+	</Window.CommandBindings>
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Resources/MainWindowResources.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+	<DockPanel >
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_Regex" >
+				<MenuItem Header="E_xecute" Command="ctrl:RegexDesignerCommands.ExecuteRegexCommand" />
+				<MenuItem Header="_Edit" Command="ctrl:RegexDesignerCommands.EditRegexCommand" />
+			</MenuItem>
+			<MenuItem Header="_Tools">
+				<MenuItem Header="_Options" Command="ctrl:RegexDesignerCommands.ToolsOptionsCommand" />
+			</MenuItem>
+		</Menu>
+		<StatusBar DockPanel.Dock="Bottom" >
+			<StatusBarItem Content="dude"/>
+		</StatusBar>
+		<Grid >
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="{Binding Path=LayoutOptions.Column0Width, Mode=TwoWay}" />
+				<ColumnDefinition Width="{Binding Path=LayoutOptions.GridSplitterSize, Mode=TwoWay}" />
+				<ColumnDefinition Width="{Binding Path=LayoutOptions.Column2Width, Mode=TwoWay}" />
+				<ColumnDefinition Width="{Binding Path=LayoutOptions.GridSplitterSize, Mode=TwoWay}" />
+				<ColumnDefinition Width="{Binding Path=LayoutOptions.Column4Width, Mode=TwoWay}" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<GridSplitter HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1"  />
+			<GridSplitter HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="3" />
+			<Grid Grid.Column="0" Grid.Row="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="{Binding Path=LayoutOptions.LeftColumnRow0Height, Mode=TwoWay}" />
+					<RowDefinition Height="{Binding Path=LayoutOptions.GridSplitterSize, Mode=TwoWay}" />
+					<RowDefinition Height="{Binding Path=LayoutOptions.LeftColumnRow2Height, Mode=TwoWay}" />
+					<RowDefinition Height="{Binding Path=LayoutOptions.GridSplitterSize, Mode=TwoWay}" />
+					<RowDefinition Height="{Binding Path=LayoutOptions.LeftColumnRow4Height, Mode=TwoWay}" />
+					<RowDefinition Height="{Binding Path=LayoutOptions.GridSplitterSize, Mode=TwoWay}" />
+					<RowDefinition Height="{Binding Path=LayoutOptions.LeftColumnRow6Height, Mode=TwoWay}" />
+				</Grid.RowDefinitions>
+				<DockPanel Grid.Row="0" >
+					<TextBlock DockPanel.Dock="Top" >Input Text</TextBlock>
+					<TabControl x:Name="inputTextTabControl">
+						<TabItem Header="Edit" x:Name="inputTextEditTab">
+							<TextBox Style="{StaticResource textBoxStyle}" 
+										TextWrapping="{Binding ApplicationOptions.InputBoxTextWrapping}"  
+										x:Name="inputTextBox" AcceptsReturn="True" Text="{Binding InputText}"/>
+						</TabItem>
+						<TabItem Header="Results" x:Name="inputTextResultsTab">
+							<hack:BindableRichTextBox  Document="{Binding InputTextResultsFlowDocument}" 
+																x:Name="inputRichTextBox" IsReadOnly="True" />
+						</TabItem>
+					</TabControl>
+				</DockPanel>
+				<GridSplitter Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" />
+				<DockPanel Grid.Row="2" >
+					<TextBlock DockPanel.Dock="Top" >Regular Expression</TextBlock>
+					<TextBox Style="{StaticResource textBoxStyle}" Text="{Binding RegularExpression}"  
+								x:Name="regexTextBox" />
+				</DockPanel>
+				<GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" />
+				<DockPanel Grid.Row="4">
+					<TextBlock DockPanel.Dock="Top">Replacement Expression</TextBlock>
+					<TextBox Style="{StaticResource textBoxStyle}" Text="{Binding ReplacementExpression}" 
+								x:Name="replaceExpressionTextBox" />
+				</DockPanel>
+				<GridSplitter Grid.Row="5" HorizontalAlignment="Stretch" />
+				<DockPanel	 Grid.Row="6" >
+					<TextBlock DockPanel.Dock="Top">Replacement Result</TextBlock>
+					<TextBox Text="{Binding ReplacementResult, Mode=OneWay}"
+								Style="{StaticResource textBoxStyle}"
+								IsReadOnly="True" VerticalAlignment="Stretch" 
+								x:Name="replaceExpressionResultTextBlock" />
+				</DockPanel>
+			</Grid>
+			<DockPanel Grid.Row="0" Grid.Column="2" >
+				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Stretch" >Match Results</TextBlock>
+				<TreeView  x:Name="resultsTreeView" ItemsSource="{Binding Matches}" 
+							  SelectedItemChanged="resultsTreeView_SelectedItemChanged" />
+			</DockPanel>
+			<DockPanel Grid.Column="4" >
+				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Stretch" >Regex Options</TextBlock>
+				<ListBox x:Name="itemsList"  Keyboard.PreviewKeyDown="itemsList_PreviewKeyDown" 
+							ItemsSource="{Binding Options}" >
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<CheckBox IsChecked="{Binding IsSelected}" Content="{Binding Name}" ToolTip="{Binding Description}" />
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</DockPanel>
+		</Grid>
+	</DockPanel>
+</Window>

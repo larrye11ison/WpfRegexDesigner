@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<descriptions>
+	<description name="Compiled" value="Expression is compiled to an assembly. This yields faster execution but increases startup time." />
+	<description name="CultureInvariant" value="Cultural differences in language are ignored." />
+	<description name="ECMAScript" value="Enables ECMAScript-compliant behavior for the expression. This value can be used only in conjunction with the IgnoreCase, Multiline, and Compiled values. The use of this value with any other values results in an exception." />
+	<description name="ExplicitCapture"  value="Only valid captures are explicitly named or numbered groups of the form (?&lt;name&gt;…). This allows unnamed parentheses to act as noncapturing groups without the syntactic clumsiness of the expression (?:…)." />
+	<description name="IgnoreCase" value="Case-insensitive matching."/>
+	<description name="IgnorePatternWhitespace" value="Eliminates unescaped white space from the pattern and enables comments marked with #. However, the IgnorePatternWhitespace value does not affect or eliminate white space in character classes." />
+	<description name="Multiline" value="Changes the meaning of ^ and $ so they match at the beginning and end, respectively, of any line, and not just the beginning and end of the entire string." />
+	<description name="None" value="Specifies that no options are set." />
+	<description name="RightToLeft" value="The search will be from right to left instead of from left to right." />
+	<description name="Singleline" value="Changes the meaning of the dot (.) so it matches every character (instead of every character except \n)." />
+</descriptions>

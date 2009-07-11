@@ -1,0 +1,73 @@
+﻿<Window x:Class="WpfRegexDesigner.View.OptionsDialog"
+		  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		  xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+		  xmlns:m="clr-namespace:WpfRegexDesigner.Model;assembly=WpfRegexDesigner.Model"
+		  xmlns:settings="clr-namespace:WpfRegexDesigner.Properties"
+		  WindowStartupLocation="CenterOwner"
+		  Title="Options" SizeToContent="WidthAndHeight">
+	<Window.Resources>
+		<settings:Settings x:Key="settings" />
+		<ObjectDataProvider MethodName="GetValues"  ObjectType="{x:Type sys:Enum}" x:Key="textWrapValues">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="TextWrapping"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider  ObjectType="{x:Type m:BrushColors}" x:Key="brushColors" />
+		<ObjectDataProvider x:Key="layoutOptionsDataProvider" x:Name="layoutOptionsDataProvider" />
+								  <!--ObjectType="{x:Type m:ScreenLayoutOptions}"--> 
+	</Window.Resources>
+	<Grid x:Name="mainGrid"  Margin="5">
+		<Grid.Resources>
+			<Style TargetType="{x:Type TextBlock}" >
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="Margin" Value="7,3,7,3" />
+			</Style>
+			<DataTemplate x:Key="tard" >
+				<StackPanel Orientation="Horizontal" Margin="5,0" 
+								TextSearch.Text="{Binding Key, Mode=OneWay}"	>
+					<Border Width="14" Height="14"  BorderBrush="Black" BorderThickness="1" Margin="3" >
+						<Border BorderBrush="White" BorderThickness="1">
+							<Rectangle Fill="{Binding Path=Key}" />
+						</Border>
+					</Border>
+					<TextBlock Margin="4" Text="{Binding Key}" />
+				</StackPanel>
+			</DataTemplate>
+		</Grid.Resources>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition  />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<TextBlock Margin="7,0,7,0"  Height="15.96" HorizontalAlignment="Left" VerticalAlignment="Center" >Input Text Wrap</TextBlock>
+		<ComboBox x:Name="inputTextBoxTextWrappingComboBox" Grid.Column="1" SelectedValue="{Binding InputBoxTextWrapping}"
+					 VerticalContentAlignment="Center" HorizontalContentAlignment="Left"
+					 ItemsSource="{Binding Source={StaticResource textWrapValues}}">
+		</ComboBox>
+		<TextBlock Grid.Row="1" HorizontalAlignment="Left" Margin="7,0,7,0" VerticalAlignment="Center" >Matched Text Foreground</TextBlock>
+		<ComboBox x:Name="MatchedTextForegroundBrushComboBox" Grid.Column="1" Grid.Row="1"
+					 SelectedValue="{Binding MatchedTextForegroundColor}"
+					 ItemsSource="{Binding Source={StaticResource brushColors}}" 
+					 SelectedValuePath="Value" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"
+					 ItemTemplate="{StaticResource tard}"  />
+		<TextBlock Grid.Row="2" Height="15.96" HorizontalAlignment="Left" Margin="7,0,7,0" VerticalAlignment="Center">Matched Text Background</TextBlock>
+		<ComboBox x:Name="MatchedTextBackgroundBrushComboBox" Grid.Column="1" Grid.Row="2"
+					 SelectedValue="{Binding MatchedTextBackgroundColor}"
+					 ItemsSource="{Binding Source={StaticResource brushColors}}" 
+					 SelectedValuePath="Value" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"
+					 ItemTemplate="{StaticResource tard}" />
+		<TextBlock Grid.Column="0" Grid.Row="3" >GridSplitter Width</TextBlock>
+		<TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Source={StaticResource layoutOptionsDataProvider}, Path=GridSplitterSize}" />
+		<DockPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="4">
+			<!--<Button Click="Button_Click" IsCancel="True" DockPanel.Dock="Right">_Cancel</Button>-->
+			<Button Click="Button_Click" IsDefault="True" DockPanel.Dock="Right">OK</Button>
+		</DockPanel>
+	</Grid>
+</Window>
