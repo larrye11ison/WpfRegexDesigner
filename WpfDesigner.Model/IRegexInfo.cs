@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace WpfRegexDesigner.Model
+﻿namespace WpfRegexDesigner.Model
 {
-	public interface IRegexInfo
-	{
-		string Value
-		{
-			get;
-		}
-		int Length
-		{
-			get;
-		}
-		int Index
-		{
-			get;
-		}
-	}
+    public interface IRegexInfo
+    {
+        int Index
+        {
+            get;
+        }
+
+        int Length
+        {
+            get;
+        }
+
+        string Value
+        {
+            get;
+        }
+    }
 }
